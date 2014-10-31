@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>CSVKit, trabajando con archivos CSV</title>
+
+		<meta name="description" content="CSV, datos, data wrangling, herramientas">
+		<meta name="author" content="Gabriela Rodríguez">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>CSVKit</h1>
+					<h3>trabajando con archivos CSV en la terminal</h3>
+					<p>
+						<small>Por <a href="http://gaba.stayover.org">Gabriela Rodríguez</a> / <a href="http://twitter.com/gaba">@gaba</a></small>
+					</p>
+					<p>
+						<small>Knight-Mozilla Open News Fellow at La Nacion, Argentina</small>
+					</p>
+					<p>Presentación en <a href="http://gabelula.github.io/csv/">http://gabelula.github.io/csv/</a></p>
+					<aside class="notes">
+						programadora de Open News en La Nacion
+						este es un taller con manos en la masa - asacar compus
+					</aside>
+				</section>
+
+				<section>
+					<h2>Formato CSV</h2>
+					<h3><a href="http://es.wikipedia.org/wiki/CSV">comma separated values</a></h3>
+					<ul>
+						<li>formato abierto</li>
+						<li>columnas se separan por comas, filas por saltos de linea</li>
+					</ul>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section>
+					<h2>CSVKit</h2>
+					<p>es un conjunto herramientas para trabajar con archivos CSV, manejarlos, limpiarlos, unirlos, convertirlos a otros formatos, etc</p>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h2>Instalación</h2>
+					<ul>
+						<li>Linux o Mac (para windows instalar <a href="http://cygwin.com/index.html">Cygwin</a>)</li>
+						<li>pip - manejador de paquetes en python</li>
+						<li>en ubuntu -
+							sudo apt-get install python-dev python-pip python-setuptools build-essential
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Tus Datos</h2>
+					<p>
+						ejemplo para jugar en <a href="http://gabelula.github.io/cvs/datos/">http://gabelula.github.io/cvs/datos/</a>
+					</p>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## XLS -> CSV
+						$ in2csv EleccionesHistoricasUY.xlsx > data.csv
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Mirar los datos
+						$ csvlook acceso-informacion-publica-2013.csv
+						...
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Hacer un resumen
+						$ csvstat acceso-informacion-publica-2013.csv
+								  1. id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
+		        <type 'unicode'>
+		        Nulls: False
+		        Unique values: 1143
+		        5 most frequent values:
+		                245,7442737,MGEYA,2013-12-27,REITERA:   4
+		                290,628690,MGEYA,2013-02-22,DATOS:      2
+		                290,628690,MGEYA,2013-02-22,INFORMACION:        2
+		                84,355174,MGEYA,2013-01-28,"ACTUACIONES:        1
+		                1,240805,MGEYA,2013-01-18,FUNCIONES:    1
+		        Max length: 44
+
+		Row count: 1148
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Mostrar sólo algunas columnas
+						$ csvcut -n acceso-informacion-publica-2013.csv
+						  1: id_solicitante
+						  2: expediente
+						  3: dependencia
+						  4: fecha
+						  5: tema
+						  6: categoria_tema
+						  7: dependencia_ministerio
+						  8: ministerio
+						  9: vencimiento_1
+						 10: vencimiento_2
+						 11: prorroga
+						 12: estado
+						 13: termino
+						 14: fecha_respuesta
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Mostrar sólo algunas columnas
+						$ csvcut -c 2,5,12 acceso-informacion-publica-2013.csv
+							expediente,tema,estado
+							240768,DATOS VARIOS CON RESPECTO A LICITACIONES DE OBRAS DE ESPACIOS VERDES ,Finalizado fuera de término
+							240791,DATOS VARIOS CON RESPECTO AL FUNCIONAMIENTO DE LAS ESTACIONES SAN JOSE DE FLORES Y NAZCA,Finalizado en término
+							...
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Pipes
+						$ csvcut -c 2,5,12 acceso-informacion-publica-2013.csv | csvlook | head
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Buscar
+						$ csvgrep -c estado -m Pendiente datos/acceso-informacion-publica-2013.csv | head
+id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
+1,240805,MGEYA,2013-01-18,FUNCIONES QUE CUMPLE EL DIRECTOR GENERAL DE LIMPIEZA,Normativa,DGTAL,Ambiente y Espacio Público,2013-02-04,,,Pendiente fuera de término,,
+...
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Unir dos archivos
+						$ csvjoin
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Convertir a JSON
+						$ csvjson
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Agregar filas de un archivo a otro
+						$ csvstack
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Muestra errores de syntaxis
+						$ csvclean acceso-informacion-publica-2013.csv
+						271 errors logged to acceso-informacion-publica-2013_err.csv
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Correr consultas SQL y exportar datos a SQL para importar en db
+						$ csvsql
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Otros comandos de Unix
+						$ less, head, tail, cat
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section>
+					<h1>¡Gracias!</h1>
+					<h3>por Gabriela Rodríguez / @gaba</h3>
+					<p>Agradecimientos: Christopher Groskopf por escribir CSVKit.</p>
+					<p>Presentación en <a href="http://gabelula.github.io/csv/">http://gabelula.github.io/csv/</a></p>
+					<p>CSVKit en <a href="https://csvkit.readthedocs.org/">https://csvkit.readthedocs.org/</a></p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
