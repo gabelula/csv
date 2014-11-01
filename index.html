@@ -98,7 +98,8 @@
 
 				<section data-markdown>
 					<script type="text/template">
-				## XLS -> CSV
+				## ¡Adios Excel!
+
 						$ in2csv EleccionesHistoricasUY.xlsx > data.csv
 					</script>
 					<aside class="notes"></aside>
@@ -106,8 +107,10 @@
 
 				<section data-markdown>
 					<script type="text/template">
-				## Mirar los datos
+				## Dar una mirada a los datos
 						$ csvlook acceso-informacion-publica-2013.csv
+						...
+						$ csvlook -e iso-8859-13 Fallecidos_2013.csv | head
 						...
 					</script>
 					<aside class="notes"></aside>
@@ -148,19 +151,15 @@
 
 				<section data-markdown>
 					<script type="text/template">
-				## Pipes
+				## Varias acciones con pipe (|)
 						$ csvcut -c 2,5,12 acceso-informacion-publica-2013.csv | csvlook | head
 					</script>
 					<aside class="notes"></aside>
 				</section>
 
-				<section>
-					<h2>Examinar datos</h2>
-				</section>
-
 				<section data-markdown>
 					<script type="text/template">
-				## Estadisticas
+				## Mirar estadisticas del CSV
 						$ csvstat acceso-informacion-publica-2013.csv
 						Unique values: 1143
 						5 most frequent values:
@@ -178,11 +177,18 @@
 
 				<section data-markdown>
 					<script type="text/template">
-				## Buscar
-						$ csvgrep -c estado -m Pendiente datos/acceso-informacion-publica-2013.csv | head
-						      id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
-									1,240805,MGEYA,2013-01-18,FUNCIONES QUE CUMPLE EL DIRECTOR GENERAL DE LIMPIEZA,Normativa,DGTAL,Ambiente y Espacio Público,2013-02-04,,,Pendiente fuera de término,,
-...
+				## Buscar en una columna
+						$ csvgrep -c estado -m "Pendiente"
+						datos/acceso-informacion-publica-2013.csv | head
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Buscar datos mediante expresiones regulares
+						$ csvgrep -c expediente -r "24\d{4}"
+						datos/acceso-informacion-publica-2013.csv | head
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -190,7 +196,9 @@
 				<section data-markdown>
 					<script type="text/template">
 				## Unir dos archivos
-						$ csvjoin
+						$ csvjoin -c Tipo_vehiculo,Codigo
+						multas_transito_2006_2010/multas2008.csv
+						multas_transito_2006_2010/tipos_de_vehiculo.csv  --left
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -198,7 +206,8 @@
 				<section data-markdown>
 					<script type="text/template">
 				## Convertir a JSON
-						$ csvjson acceso-informacion-publica-2013.csv
+						$ csvjson --key Codigo --indent 4
+						multas_transito_2006_2010/tipos_de_vehiculo.csv
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -213,7 +222,7 @@
 
 				<section data-markdown>
 					<script type="text/template">
-				## Muestra errores de syntaxis
+				## Muestra errores comunes de sintaxis
 						$ csvclean acceso-informacion-publica-2013.csv
 						271 errors logged to acceso-informacion-publica-2013_err.csv
 					</script>
