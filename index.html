@@ -85,6 +85,7 @@
 							sudo apt-get install python-dev python-pip python-setuptools build-essential
 						</li>
 					</ul>
+					<h3>pip install csvkit</h3>
 				</section>
 
 				<section>
@@ -108,27 +109,6 @@
 				## Mirar los datos
 						$ csvlook acceso-informacion-publica-2013.csv
 						...
-					</script>
-					<aside class="notes"></aside>
-				</section>
-
-				<section data-markdown>
-					<script type="text/template">
-				## Hacer un resumen
-						$ csvstat acceso-informacion-publica-2013.csv
-								  1. id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
-		        <type 'unicode'>
-		        Nulls: False
-		        Unique values: 1143
-		        5 most frequent values:
-		                245,7442737,MGEYA,2013-12-27,REITERA:   4
-		                290,628690,MGEYA,2013-02-22,DATOS:      2
-		                290,628690,MGEYA,2013-02-22,INFORMACION:        2
-		                84,355174,MGEYA,2013-01-28,"ACTUACIONES:        1
-		                1,240805,MGEYA,2013-01-18,FUNCIONES:    1
-		        Max length: 44
-
-		Row count: 1148
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -174,12 +154,34 @@
 					<aside class="notes"></aside>
 				</section>
 
+				<section>
+					<h2>Examinar datos</h2>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+				## Estadisticas
+						$ csvstat acceso-informacion-publica-2013.csv
+						Unique values: 1143
+						5 most frequent values:
+										245,7442737,MGEYA,2013-12-27,REITERA:   4
+										290,628690,MGEYA,2013-02-22,DATOS:      2
+										290,628690,MGEYA,2013-02-22,INFORMACION:        2
+										84,355174,MGEYA,2013-01-28,"ACTUACIONES:        1
+										1,240805,MGEYA,2013-01-18,FUNCIONES:    1
+						Max length: 44
+
+						Row count: 1148
+					</script>
+					<aside class="notes"></aside>
+				</section>
+
 				<section data-markdown>
 					<script type="text/template">
 				## Buscar
 						$ csvgrep -c estado -m Pendiente datos/acceso-informacion-publica-2013.csv | head
-id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
-1,240805,MGEYA,2013-01-18,FUNCIONES QUE CUMPLE EL DIRECTOR GENERAL DE LIMPIEZA,Normativa,DGTAL,Ambiente y Espacio Público,2013-02-04,,,Pendiente fuera de término,,
+						      id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_ministerio,ministerio,vencimiento_1,vencimiento_2,prorroga,estado,termino,fecha_respuesta
+									1,240805,MGEYA,2013-01-18,FUNCIONES QUE CUMPLE EL DIRECTOR GENERAL DE LIMPIEZA,Normativa,DGTAL,Ambiente y Espacio Público,2013-02-04,,,Pendiente fuera de término,,
 ...
 					</script>
 					<aside class="notes"></aside>
@@ -196,7 +198,7 @@ id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_mini
 				<section data-markdown>
 					<script type="text/template">
 				## Convertir a JSON
-						$ csvjson
+						$ csvjson acceso-informacion-publica-2013.csv
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -204,7 +206,7 @@ id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_mini
 				<section data-markdown>
 					<script type="text/template">
 				## Agregar filas de un archivo a otro
-						$ csvstack
+						$ csvstack multas2008.csv tipos_de_vehiculo.csv
 					</script>
 					<aside class="notes"></aside>
 				</section>
@@ -221,7 +223,11 @@ id_solicitante,expediente,dependencia,fecha,tema,categoria_tema,dependencia_mini
 				<section data-markdown>
 					<script type="text/template">
 				## Correr consultas SQL y exportar datos a SQL para importar en db
-						$ csvsql
+						$ csvsql -i postgresql multas_transito_2006_2010/tipos_de_vehiculo.csv
+						CREATE TABLE tipos_de_vehiculo (
+			        "Codigo" INTEGER NOT NULL,
+			        "Nombre" VARCHAR(29) NOT NULL
+						);
 					</script>
 					<aside class="notes"></aside>
 				</section>
